@@ -42,7 +42,16 @@ Amounts are compared as integer euro cents. Provider timestamps are read as UTC;
 
 ## Current scope and limitations
 
-The current command analyzes one date at a time. It does not yet persist findings or report which discrepancies are new, changed, or resolved between runs. Records without IDs are surfaced but are not automatically paired; the available fields and business rules are not enough to make every such match safely.
+The command saves a rolling list of open findings in `recon-state.json` in the data directory. On each run, it checks the saved findings against that date's exports, keeps findings it cannot confirm as resolved, and adds that date's findings. A finding with an ID is considered resolved only when the opposite-side record appears exactly once with the same amount. Amount mismatches are considered resolved when the ID appears exactly once on both sides with equal amounts.
+
+The state currently has these limits:
+
+- The report shows exceptions for the requested date, not which findings are new, changed, or resolved compared with the saved state.
+- Resolution is checked using only the current date's exports -> a finding is not cleared merely because its ID is absent from both files for that date.
+- Findings without an ID and findings for repeated IDs are never considered resolved automatically, so they remain open in state.
+- Re-running the most recently processed date leaves state unchanged. The state stores only `last_processed_date`, so running an older date after a newer one is not rejected and can replace the rolling state with results based on that older date.
+
+Records without IDs are listed for human review and are not automatically paired; the available fields and business rules are not enough to make every such match safely.
 
 ## Tests
 
