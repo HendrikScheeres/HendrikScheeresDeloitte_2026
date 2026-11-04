@@ -32,16 +32,26 @@ def run(date: str, data_dir: Path) -> int:
     provider_ids = {transaction.id for transaction in provider if transaction.id}
     ledger_ids = {transaction.id for transaction in ledger if transaction.id}
 
-    # GENERATE OVERVIEW
+    # generate overview
     print(f"{date}")
     print(f"{'':28}{'Provider':>10}{'Ledger':>10}")
     print(f"{'Total records':28}{len(provider):>10}{len(ledger):>10}")
     print(f"{'Records without an ID':28}{provider_without_id:>10}{ledger_without_id:>10}")
     print("\n")
     print(f"{'Distinct ids in both:':30}{len(provider_ids & ledger_ids):>8}")
-
+    
+    # find the keys that are in both ledger and provider
     provider_by_id = group_transactions_by_id(provider)
     ledger_by_id = group_transactions_by_id(ledger)
+
+    shared_ids = provider_by_id.keys() & ledger_by_id.keys()
+    provider_only_ids = provider_by_id.keys() - ledger_by_id.keys()
+    ledger_only_ids = ledger_by_id.keys() - provider_by_id.keys()
+
+    print(f"IDs found on both sides: {len(shared_ids)}")
+    print(f"IDs only in provider: {len(provider_only_ids)}")
+    print(f"IDs only in ledger: {len(ledger_only_ids)}")
+
 
     return 0
 

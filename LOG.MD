@@ -49,4 +49,15 @@ So
 2. Next day, run it again. Compares files, then compares those findings with the findings of march 2nd the report can show what is new and whats been resolved.
 
 
+#### Implementation of reconciliation between files
+
+For now we'll focus on what already matches and works, then we'll see if we can match the rest.
+
+1. get the shared keys
+2. find the IDs only in the provider records
+3. find the IDs only in the ledger records
+
+print the stats
+
+
 ### 2 save states and reload them
