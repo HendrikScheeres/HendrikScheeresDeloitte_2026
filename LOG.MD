@@ -211,4 +211,28 @@ same reference, same amount, and almost the same time and same merchant.
 But no doubles on the same side then.
 
 
-# COFFEE BREAK AT 16:14 (1 hour an 45 min in)
+# COFFEE BREAK AT 16:15 (1 hour an 45 min in)
+# STARTED AGAIN AT 16:45 
+
+To get the states:
+
+If an issue appears on march the second, that wasn't on march the first it is new -> add to the report
+
+An issue on both, but with changed details, has changed
+
+If an issue was on march the first, but not on march the second, can you assume it was solved or is it just an added issue?
+
+so new, resolved or changed.
+
+And also there might be entries that bounced to the next day (there are datapoints to confirm this), so you kind of want to do a rerun of everything, also what is saved in the state.
+
+Misunderstanding about the state -> A new state is created each run
+NO, the state is updated each run and built upon.
+
+So find today's issues
+Add the issues to the list
+Remove it when it can be fixed (based on new input)
+Save the update list.
+
+Current attempt at implementing states:
+
