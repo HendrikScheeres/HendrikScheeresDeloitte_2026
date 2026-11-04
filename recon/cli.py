@@ -3,73 +3,53 @@ from __future__ import annotations
 
 import argparse
 import sys
+from collections import Counter
 from pathlib import Path
 
+from .findings import Finding, build_findings
 from .readers import load_day
-from .models import Transaction
 
 DEFAULT_DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 
-def group_transactions_by_id(
-    transactions: list[Transaction],
-) -> dict[str, list[Transaction]]:
-    """Group records with an ID, retaining all records for duplicate IDs."""
-    groups = dict()
-    for transaction in transactions:
-        if transaction.id:
-            groups.setdefault(transaction.id, []).append(transaction)
-    return groups
+
+def format_amount(amount_cents: int) -> str:
+    sign = "-" if amount_cents < 0 else ""
+    whole, cents = divmod(abs(amount_cents), 100)
+    return f"€{sign}{whole}.{cents:02d}"
 
 
-def print_record(tx: Transaction) -> None:
-    amount = f"€{tx.amount_cents / 100:.2f}"
-    print(
-        f"  {tx.source} | ref={tx.ref} | id={tx.id or 'no ID'}"
-        f" | amount={amount} | time={tx.timestamp.isoformat()}"
-        f" | merchant={tx.merchant}"
-    )
+def print_finding(finding: Finding) -> None:
+    print(f"  {finding['type']} ({finding['key']})")
+    if "reason" in finding:
+        print(f"    Review: {finding['reason']}")
+    for record in finding["records"]:
+        amount = format_amount(record["amount_cents"])
+        print(
+            f"    {record['source']} | ref={record['ref']}"
+            f" | id={record['id'] or 'no ID'} | amount={amount}"
+            f" | time={record['timestamp']} | merchant={record['merchant']}"
+        )
+
+
+def print_report(date: str, findings: list[Finding]) -> None:
+    print(f"Reconciliation — {date}")
+    counts = Counter(finding["type"] for finding in findings)
+    print(f"\n{len(findings)} findings")
+    for finding_type in sorted(counts):
+        print(f"  {finding_type}: {counts[finding_type]}")
+
+    if findings:
+        print("\nDetails:")
+        for finding in findings:
+            print_finding(finding)
+    else:
+        print("No discrepancies found.")
 
 
 def run(date: str, data_dir: Path) -> int:
     provider, ledger = load_day(data_dir, date)
-    provider_without_id = sum(not transaction.id for transaction in provider)
-    ledger_without_id = sum(not transaction.id for transaction in ledger)
-    provider_by_id = group_transactions_by_id(provider)
-    ledger_by_id = group_transactions_by_id(ledger)
-
-    shared_ids = provider_by_id.keys() & ledger_by_id.keys()
-    provider_only_ids = provider_by_id.keys() - ledger_by_id.keys()
-    ledger_only_ids = ledger_by_id.keys() - provider_by_id.keys()
-
-    print(f"Reconciliation — {date}\n")
-    print(f"IDs found on both sides: {len(shared_ids)}")
-    print("Needs attention:")
-    print(f"  {len(ledger_only_ids)} IDs only in ledger")
-    print(f"  {len(provider_only_ids)} IDs only in provider")
-    print("Records without an ID (not grouped):")
-    print(f"  {provider_without_id} in provider")
-    print(f"  {ledger_without_id} in ledger")
-
-    print("\nOnly in provider:")
-    for transaction_id in sorted(provider_only_ids):
-        for tx in provider_by_id[transaction_id]:
-            print_record(tx)
-
-    print("\nOnly in ledger:")
-    for transaction_id in sorted(ledger_only_ids):
-        for tx in ledger_by_id[transaction_id]:
-            print_record(tx)
-
-    print("\nProvider records without an ID:")
-    for tx in provider:
-        if not tx.id:
-            print_record(tx)
-
-    print("\nLedger records without an ID:")
-    for tx in ledger:
-        if not tx.id:
-            print_record(tx)
-
+    findings = build_findings(provider, ledger)
+    print_report(date, findings)
     return 0
 
 

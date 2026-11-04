@@ -122,7 +122,7 @@ dotnet test
 dotnet run --project Recon -- run --date 2026-03-01
 ```
 
-Each starter accepts `--data-dir <path>` if you move the data. State, matching, change detection and the report are yours to design; the starters contain none of that on purpose.
+Each starter accepts `--data-dir <path>` if you move the data. The Python implementation currently classifies findings for one run; state and change detection across dates remain to be implemented.
 
 ### Any other language
 
