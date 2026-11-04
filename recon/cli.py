@@ -5,7 +5,6 @@ import argparse
 import sys
 from collections import Counter
 from pathlib import Path
-import json
 
 from .findings import Finding, build_findings
 from .models import Transaction
@@ -88,84 +87,9 @@ def print_report(
     else:
         print("No discrepancies found.")
 
-def is_resolved(
-    finding: Finding,
-    provider: list[Transaction],
-    ledger: list[Transaction],
-) -> bool:
-    transaction_id = finding["transaction_id"]
-    if not transaction_id:
-        return False
-
-    provider_matches = [tx for tx in provider if tx.id == transaction_id]
-    ledger_matches = [tx for tx in ledger if tx.id == transaction_id]
-
-    if finding["type"] == "provider_only":
-        old_records = finding["records"]
-        return (
-            len(old_records) == 1
-            and len(ledger_matches) == 1
-            and old_records[0]["amount_cents"] == ledger_matches[0].amount_cents
-        )
-
-    if finding["type"] == "ledger_only":
-        old_records = finding["records"]
-        return (
-            len(old_records) == 1
-            and len(provider_matches) == 1
-            and old_records[0]["amount_cents"] == provider_matches[0].amount_cents
-        )
-
-    if finding["type"] == "amount_mismatch":
-        return (
-            len(provider_matches) == 1
-            and len(ledger_matches) == 1
-            and provider_matches[0].amount_cents == ledger_matches[0].amount_cents
-        )
-
-    return False
-
-
 def run(date: str, data_dir: Path) -> int:
     provider, ledger = load_day(data_dir, date)
     findings = build_findings(provider, ledger)
-
-    # write the state
-    state_path = data_dir / "recon-state.json"
-
-    if state_path.exists():
-        previous_state = json.loads(state_path.read_text(encoding="utf-8"))
-    else:
-        previous_state = {"open_findings": []}
-
-    if previous_state.get("last_processed_date") == date:
-        print(f"{date} has already been processed; state was not changed.")
-        return 0
-
-    still_open = [
-    finding
-    for finding in previous_state["open_findings"]
-    if not is_resolved(finding, provider, ledger)
-    ]
-
-    open_findings_by_key = {
-        finding["key"]: finding
-        for finding in still_open
-    }
-
-    for finding in findings:
-        open_findings_by_key.setdefault(finding["key"], finding)
-
-    open_findings = list(open_findings_by_key.values())
-    state = {
-        "last_processed_date": date,
-        "open_findings": open_findings,
-    }
-    state_path.write_text(
-        json.dumps(state, indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
-
     print_report(date, provider, ledger, findings)
     return 0
 
