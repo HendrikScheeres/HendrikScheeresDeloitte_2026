@@ -6,17 +6,42 @@ import sys
 from pathlib import Path
 
 from .readers import load_day
+from .models import Transaction
 
 DEFAULT_DATA_DIR = Path(__file__).resolve().parents[1] / "data"
+
+def group_transactions_by_id(
+    transactions: list[Transaction],
+) :
+    """Group records with an ID, retaining all records for duplicate IDs."""
+    groups = dict()
+    for transaction in transactions:
+        if transaction.id:
+            groups.setdefault(transaction.id, []).append(transaction)
+    return groups
 
 
 def run(date: str, data_dir: Path) -> int:
     provider, ledger = load_day(data_dir, date)
     print(f"{date}: {len(provider)} provider records, {len(ledger)} ledger rows")
 
-    for tx in provider:
-        # This is where the exercise starts.
-        pass
+    # Print more information on the data
+    provider_without_id = sum(not transaction.id for transaction in provider)
+    ledger_without_id = sum(not transaction.id for transaction in ledger)
+
+    provider_ids = {transaction.id for transaction in provider if transaction.id}
+    ledger_ids = {transaction.id for transaction in ledger if transaction.id}
+
+    # GENERATE OVERVIEW
+    print(f"{date}")
+    print(f"{'':28}{'Provider':>10}{'Ledger':>10}")
+    print(f"{'Total records':28}{len(provider):>10}{len(ledger):>10}")
+    print(f"{'Records without an ID':28}{provider_without_id:>10}{ledger_without_id:>10}")
+    print("\n")
+    print(f"{'Distinct ids in both:':30}{len(provider_ids & ledger_ids):>8}")
+
+    provider_by_id = group_transactions_by_id(provider)
+    ledger_by_id = group_transactions_by_id(ledger)
 
     return 0
 
