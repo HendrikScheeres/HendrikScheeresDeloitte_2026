@@ -21,6 +21,15 @@ def group_transactions_by_id(
     return groups
 
 
+def print_record(tx: Transaction) -> None:
+    amount = f"€{tx.amount_cents / 100:.2f}"
+    print(
+        f"  {tx.source} | ref={tx.ref} | id={tx.id or 'no ID'}"
+        f" | amount={amount} | time={tx.timestamp.isoformat()}"
+        f" | merchant={tx.merchant}"
+    )
+
+
 def run(date: str, data_dir: Path) -> int:
     provider, ledger = load_day(data_dir, date)
     provider_without_id = sum(not transaction.id for transaction in provider)
@@ -41,6 +50,25 @@ def run(date: str, data_dir: Path) -> int:
     print(f"  {provider_without_id} in provider")
     print(f"  {ledger_without_id} in ledger")
 
+    print("\nOnly in provider:")
+    for transaction_id in sorted(provider_only_ids):
+        for tx in provider_by_id[transaction_id]:
+            print_record(tx)
+
+    print("\nOnly in ledger:")
+    for transaction_id in sorted(ledger_only_ids):
+        for tx in ledger_by_id[transaction_id]:
+            print_record(tx)
+
+    print("\nProvider records without an ID:")
+    for tx in provider:
+        if not tx.id:
+            print_record(tx)
+
+    print("\nLedger records without an ID:")
+    for tx in ledger:
+        if not tx.id:
+            print_record(tx)
 
     return 0
 
