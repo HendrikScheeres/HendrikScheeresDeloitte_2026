@@ -1,6 +1,6 @@
 # Take-home: Daily transaction reconciliation
 
-**Time box: 3 hours.** We mean it — an unfinished tool with clear reasoning beats a complete one without.
+A small Python command-line tool that compares daily payment-provider and internal-ledger exports and reports discrepancies for review.
 
 ## How to deliver
 
