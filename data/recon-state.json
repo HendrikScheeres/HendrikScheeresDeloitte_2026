@@ -1,5 +1,5 @@
 {
-  "last_processed_date": "2026-03-02",
+  "last_processed_date": "2026-03-01",
   "open_findings": [
     {
       "key": "id:pt_21c4b9fddb5b",
@@ -1209,136 +1209,91 @@
     },
     {
       "key": "id:pt_110fb2650b9b",
-      "type": "provider_only",
+      "type": "ledger_only",
       "transaction_id": "pt_110fb2650b9b",
       "records": [
         {
-          "source": "provider",
-          "ref": "pt_110fb2650b9b",
+          "source": "ledger",
+          "ref": "LG-4186360",
           "id": "pt_110fb2650b9b",
           "amount_cents": 1633,
-          "timestamp": "2026-03-01T22:06:07+00:00",
-          "merchant": "UBER *TRIP"
-        }
-      ]
-    },
-    {
-      "key": "id:pt_27c4d852592b",
-      "type": "provider_only",
-      "transaction_id": "pt_27c4d852592b",
-      "records": [
-        {
-          "source": "provider",
-          "ref": "pt_27c4d852592b",
-          "id": "pt_27c4d852592b",
-          "amount_cents": 17490,
-          "timestamp": "2026-03-01T23:59:59+00:00",
-          "merchant": "MICROSOFT*365"
+          "timestamp": "2026-03-01T22:06:57+00:00",
+          "merchant": "Uber B.V."
         }
       ]
     },
     {
       "key": "id:pt_2a60eb7ecb9c",
-      "type": "ledger_only",
+      "type": "provider_only",
       "transaction_id": "pt_2a60eb7ecb9c",
       "records": [
         {
-          "source": "ledger",
-          "ref": "LG-4188763",
+          "source": "provider",
+          "ref": "pt_2a60eb7ecb9c",
           "id": "pt_2a60eb7ecb9c",
           "amount_cents": 1343,
-          "timestamp": "2026-03-01T10:56:58+00:00",
-          "merchant": "De Bijenkorf B.V."
+          "timestamp": "2026-03-01T10:56:46+00:00",
+          "merchant": "DE BIJENKORF"
         }
       ]
     },
     {
       "key": "id:pt_3bf19a82f830",
-      "type": "provider_only",
+      "type": "ledger_only",
       "transaction_id": "pt_3bf19a82f830",
       "records": [
         {
-          "source": "provider",
-          "ref": "pt_3bf19a82f830",
+          "source": "ledger",
+          "ref": "LG-4185563",
           "id": "pt_3bf19a82f830",
           "amount_cents": 885,
-          "timestamp": "2026-03-01T20:14:59+00:00",
-          "merchant": "NS REIZIGERS"
+          "timestamp": "2026-03-01T20:15:24+00:00",
+          "merchant": "NS Reizigers B.V."
         }
       ]
     },
     {
       "key": "id:pt_411dbb2612ba",
-      "type": "provider_only",
+      "type": "ledger_only",
       "transaction_id": "pt_411dbb2612ba",
       "records": [
         {
-          "source": "provider",
-          "ref": "pt_411dbb2612ba",
+          "source": "ledger",
+          "ref": "LG-4185855",
           "id": "pt_411dbb2612ba",
           "amount_cents": 2366,
-          "timestamp": "2026-03-01T21:07:09+00:00",
-          "merchant": "ALBERT HEIJN 1372"
+          "timestamp": "2026-03-01T21:08:23+00:00",
+          "merchant": "Albert Heijn B.V."
         }
       ]
     },
     {
       "key": "id:pt_4686e4321d9e",
-      "type": "provider_only",
+      "type": "ledger_only",
       "transaction_id": "pt_4686e4321d9e",
       "records": [
         {
-          "source": "provider",
-          "ref": "pt_4686e4321d9e",
+          "source": "ledger",
+          "ref": "LG-4185341",
           "id": "pt_4686e4321d9e",
           "amount_cents": 6000,
-          "timestamp": "2026-03-01T23:28:57+00:00",
-          "merchant": "ADOBE SYSTEMS"
+          "timestamp": "2026-03-01T23:29:36+00:00",
+          "merchant": "Adobe Systems Software Ireland Ltd"
         }
       ]
     },
     {
       "key": "id:pt_56be544c5b80",
-      "type": "provider_only",
+      "type": "ledger_only",
       "transaction_id": "pt_56be544c5b80",
       "records": [
         {
-          "source": "provider",
-          "ref": "pt_56be544c5b80",
+          "source": "ledger",
+          "ref": "LG-4185388",
           "id": "pt_56be544c5b80",
           "amount_cents": 7944,
-          "timestamp": "2026-03-01T20:55:36+00:00",
-          "merchant": "BOLT.EU"
-        }
-      ]
-    },
-    {
-      "key": "id:pt_684c737828f6",
-      "type": "provider_only",
-      "transaction_id": "pt_684c737828f6",
-      "records": [
-        {
-          "source": "provider",
-          "ref": "pt_684c737828f6",
-          "id": "pt_684c737828f6",
-          "amount_cents": 9897,
-          "timestamp": "2026-03-01T23:59:59+00:00",
-          "merchant": "ETOS 0917"
-        }
-      ]
-    },
-    {
-      "key": "id:pt_724ca1763f2a",
-      "type": "provider_only",
-      "transaction_id": "pt_724ca1763f2a",
-      "records": [
-        {
-          "source": "provider",
-          "ref": "pt_724ca1763f2a",
-          "id": "pt_724ca1763f2a",
-          "amount_cents": 10888,
-          "timestamp": "2026-03-01T23:59:59+00:00",
-          "merchant": "AMZN MKTPLACE EU"
+          "timestamp": "2026-03-01T20:56:43+00:00",
+          "merchant": "Bolt Operations OU"
         }
       ]
     }

@@ -14,7 +14,7 @@ Chose the Python starter, moved it to the repo root. Set up a virtual environmen
 3. Log as you go
 
 
-## My take on the assignement
+## The assignement
 
 As is already stated start with this order:
 1. Report discrepancies
@@ -24,7 +24,7 @@ As is already stated start with this order:
 
 
 
-### 1 Report on discrepancies
+### 1. Report on discrepancies
 Report discrepancies — transactions present on one side but not the other, and transactions on both sides with differing amounts.
 
 A possible example of this:
@@ -62,9 +62,11 @@ print the stats
 Report the discrepancies finished at: 15:41
 
 
-### 2 save states and reload them
+### 2. Save states and reload them
 
 So if i run it on 2026-03-01, I get this:
+
+```
 Reconciliation — 2026-03-01
 
 IDs found on both sides: 1959
@@ -135,10 +137,11 @@ Ledger records without an ID:
   ledger | ref=LG-4186539 | id=no ID | amount=€5.26 | time=2026-03-01T04:07:40+00:00 | merchant=Media Markt Saturn Holding Nederland
   ledger | ref=LG-4186763 | id=no ID | amount=€249.00 | time=2026-03-01T12:31:19+00:00 | merchant=Amazon EU S.a.r.l.
   ledger | ref=LG-4186819 | id=no ID | amount=€43.31 | time=2026-03-01T21:45:42+00:00 | merchant=Media Markt Saturn Holding Nederland
-
+```
 
   If I run it on the second day:
 
+```
   Reconciliation — 2026-03-02
 
 IDs found on both sides: 1955
@@ -185,10 +188,11 @@ Ledger records without an ID:
   ledger | ref=LG-4188262 | id=no ID | amount=€108.52 | time=2026-03-02T09:13:05+00:00 | merchant=Jumbo Supermarkten B.V.
   ledger | ref=LG-4188385 | id=no ID | amount=€10.83 | time=2026-03-02T17:19:19+00:00 | merchant=Media Markt Saturn Holding Nederland
 
-
+```
 
 Are there any doubles amongst these, and which? Well codex found these:
 
+```
 found six repeated transaction IDs across the two reports’ one-sided lists. In each case, the amount is the same and the record appears on opposite sides on the two dates:
 | Transaction ID | March 1 report | March 2 report | Amount |
 |---|---|---|---:|
@@ -198,7 +202,7 @@ found six repeated transaction IDs across the two reports’ one-sided lists. In
 | `pt_411dbb2612ba` | Ledger only | Provider only | €23.66 |
 | `pt_4686e4321d9e` | Ledger only | Provider only | €60.00 |
 | `pt_56be544c5b80` | Ledger only | Provider only | €79.44 |
-
+```
 
 These look like date-boundary discrepancies: the same transaction is missing from one side’s March 1 comparison, then appears on the other side’s March 2 comparison. So the problem seems to be a shift in date.
 For example:
@@ -210,9 +214,14 @@ same reference, same amount, and almost the same time and same merchant.
 
 But no doubles on the same side then.
 
+---
+### COFFEE BREAK
+- **BREAK AT 16:15 (1 hour an 45 min in)**
+- **STARTED AGAIN AT 16:45**
 
-# COFFEE BREAK AT 16:15 (1 hour an 45 min in)
-# STARTED AGAIN AT 16:45 
+---
+
+### State logic
 
 To get the states:
 
@@ -234,5 +243,5 @@ Add the issues to the list
 Remove it when it can be fixed (based on new input)
 Save the update list.
 
-Current attempt at implementing states:
+## Evaluation
 
